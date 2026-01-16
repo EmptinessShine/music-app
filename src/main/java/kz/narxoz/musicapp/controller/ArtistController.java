@@ -1,4 +1,5 @@
 package kz.narxoz.musicapp.controller;
+
 import kz.narxoz.musicapp.dto.ArtistDto;
 import kz.narxoz.musicapp.service.ArtistService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.List;
 @RequestMapping("/api/artists")
 @RequiredArgsConstructor
 public class ArtistController {
+
     private final ArtistService service;
 
     @GetMapping
@@ -17,9 +19,26 @@ public class ArtistController {
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public ArtistDto getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ArtistDto create(@RequestBody ArtistDto dto) {
         return service.create(dto);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ArtistDto update(@PathVariable Long id, @RequestBody ArtistDto dto) {
+        return service.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }
