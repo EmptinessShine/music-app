@@ -7,7 +7,6 @@ import kz.narxoz.musicapp.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +16,7 @@ public class ArtistService {
     private final ArtistMapper mapper;
 
     public List<ArtistDto> getAll() {
-        return repository.findAll().stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+        return mapper.toDtoList(repository.findAll());
     }
 
     public ArtistDto getById(Long id) {
@@ -42,6 +39,7 @@ public class ArtistService {
 
         return mapper.toDto(repository.save(artist));
     }
+
     public void delete(Long id) {
         repository.deleteById(id);
     }
